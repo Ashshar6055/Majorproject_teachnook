@@ -8,13 +8,13 @@ from collections import defaultdict
 import threading
 import time
 
-# Global variables
+
 traffic_data = defaultdict(int)
 stop_sniffing = False
 target_ip = ''
 logfile = open(f"packet_log_{time.strftime('%Y%m%d_%H%M%S')}.txt", "a")
 
-# Initialize sniff_thread as a global variable
+
 sniff_thread = threading.Thread(target=lambda: None)
 sniff_thread.daemon = True
 
@@ -95,26 +95,24 @@ def on_closing():
     logfile.close()
     root.destroy()
 
-# Setup the plot
+
 fig = Figure(figsize=(10, 6), dpi=100)
 ax = fig.add_subplot(111)
 
-# Initialize GUI
+
 root = tk.Tk()
 root.title("Network Monitor Tool")
 
-# Set custom background color and styles
 root.configure(bg='#333333')
 
-# Create notebook (tabs)
+
 notebook = ttk.Notebook(root)
 notebook.pack(pady=10, padx=10, fill=tk.BOTH, expand=True)
 
-# Packet Capture Tab
+
 capture_tab = ttk.Frame(notebook)
 notebook.add(capture_tab, text="Capture")
 
-# Target IP Entry
 tk.Label(capture_tab, text="Target IP Address:", font=("Arial", 14), bg='#333333', fg='white').pack(pady=10)
 target_ip_entry = tk.Entry(capture_tab, width=40, font=("Arial", 12))
 target_ip_entry.pack(pady=10)
@@ -129,25 +127,24 @@ start_button.pack(side=tk.LEFT, padx=10)
 stop_button = tk.Button(button_frame, text="Stop Capture", command=stop_capture, bg='#f44336', fg='white', font=("Arial", 12, 'bold'))
 stop_button.pack(side=tk.LEFT, padx=10)
 
-# Log Text Area
+
 log_text_area = scrolledtext.ScrolledText(capture_tab, width=60, height=20, bg='#1e1e1e', fg='white', font=("Courier New", 10))
 log_text_area.pack(pady=10)
 
-# Status Label
+
 status_var = tk.StringVar()
 status_var.set("Status: Idle")
 status_label = tk.Label(capture_tab, textvariable=status_var, font=("Arial", 12), bg='#333333', fg='#4CAF50')
 status_label.pack(pady=10)
 
-# Graph Tab
+
 graph_tab = ttk.Frame(notebook)
 notebook.add(graph_tab, text="Graph")
 
-# Plot Canvas
+
 canvas = FigureCanvasTkAgg(fig, master=graph_tab)
 canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
-# Function to update the plot in the GUI
 def update_plot_canvas():
     try:
         update_plot()
@@ -155,13 +152,12 @@ def update_plot_canvas():
     except Exception as e:
         print(f"Error updating plot: {e}")
 
-# Start updating the plot canvas
 root.after(1000, update_plot_canvas)
 
-# Close event handler
+
 root.protocol("WM_DELETE_WINDOW", on_closing)
 
-# Start the Tkinter event loop
+
 try:
     root.mainloop()
 except Exception as e:
